@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+python/PASCAL_VOC
+*.zip
+*.cmake
+
+src/build
+*.make
+*.log
+*.bin
+*.pyc
