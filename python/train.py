@@ -75,27 +75,27 @@ def main():
     for epoch in range(config.ANCHORS):
         train_fn(test_loader, model, optimizer, loss_fn, scalar, scaled_anchors)
 
-    if config.SAVE_MODEL:
-        save_checkpoint(model, optimizer)
-    
-    if epoch % 10 == 0 and epoch > 0:
-        check_class_accuracy(model, test_loader, threshold=config.CONF_THRESHOLD)
+        if config.SAVE_MODEL:
+            save_checkpoint(model, optimizer)
+        
+        if epoch % 10 == 0 and epoch > 0:
+            check_class_accuracy(model, test_loader, threshold=config.CONF_THRESHOLD)
 
-        pred_boxes, true_boxes = get_evaluation_bboxes(
-            test_loader,
-            model,
-            iou_threshold=config.NMS_IOU_THRESH,
-            anchors=config.ANCHORS,
-            threshold=config.CONF_THRESHOLD
-        )
-        mapval = mean_average_precision(
-            pred_boxes,
-            true_boxes,
-            iou_threshold=config.MAP_IOU_THRESH,
-            box_format="midpoint",
-            num_classes=config.NUM_CLASSES
-        )
-        print('MAP: {}'.format(mapval.item()))
+            pred_boxes, true_boxes = get_evaluation_bboxes(
+                test_loader,
+                model,
+                iou_threshold=config.NMS_IOU_THRESH,
+                anchors=config.ANCHORS,
+                threshold=config.CONF_THRESHOLD
+            )
+            mapval = mean_average_precision(
+                pred_boxes,
+                true_boxes,
+                iou_threshold=config.MAP_IOU_THRESH,
+                box_format="midpoint",
+                num_classes=config.NUM_CLASSES
+            )
+            print('MAP: {}'.format(mapval.item()))
 
 if __name__ == "__main__":
     main()
